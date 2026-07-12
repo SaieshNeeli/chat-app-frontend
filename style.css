@@ -37,7 +37,12 @@ body {
     margin: 0;
 }
 
-#refreshBtn {
+.header-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.action-btn {
     background: transparent;
     border: none;
     color: #4a5568;
@@ -50,9 +55,13 @@ body {
     transition: background 0.2s, color 0.2s;
 }
 
-#refreshBtn:hover {
+.action-btn:hover {
     background: #edf2f7;
     color: #007bff;
+}
+
+#resetBtn:hover {
+    color: #dc3545;
 }
 
 #status {

@@ -6,7 +6,8 @@ const sendBtn = document.getElementById("sendBtn");
 // Generate a unique ID for this browser tab
 const myId = crypto.randomUUID();
 
-const socket = new WebSocket("wss://chat-app-o1bd.onrender.com/ws");
+const socket = new WebSocket("ws://127.0.0.1:8000/ws");
+// const socket = new WebSocket("wss://chat-app-o1bd.onrender.com/ws");
 
 socket.onopen = () => {
     statusDiv.innerText = "Connected";
@@ -110,5 +111,25 @@ const refreshBtn = document.getElementById("refreshBtn");
 if (refreshBtn) {
     refreshBtn.addEventListener("click", () => {
         window.location.reload();
+    });
+}
+
+// Add listener for the reset button
+const resetBtn = document.getElementById("resetBtn");
+if (resetBtn) {
+    resetBtn.addEventListener("click", async () => {
+        try {
+            const wsUrl = socket.url;
+            const httpUrl = wsUrl
+                .replace("wss://", "https://")
+                .replace("ws://", "http://")
+                .replace("/ws", "/reset");
+
+            await fetch(httpUrl, {
+                method: "POST"
+            });
+        } catch (error) {
+            console.error("Error calling reset endpoint:", error);
+        }
     });
 }
