@@ -1,0 +1,132 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f2f2f2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.chat-container {
+    width: 100%;
+    max-width: 500px;
+    height: 90vh;
+    max-height: 650px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+h2 {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+#status {
+    text-align: center;
+    margin-bottom: 15px;
+    color: green;
+    font-weight: bold;
+}
+
+#messages {
+    flex: 1;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+.message {
+    max-width: 80%;
+    padding: 10px 15px;
+    margin: 6px 0;
+    border-radius: 18px;
+    word-wrap: break-word;
+    font-size: 15px;
+}
+
+.me {
+    align-self: flex-end;
+    background: #007bff;
+    color: white;
+}
+
+.other {
+    align-self: flex-start;
+    background: #e5e5ea;
+    color: black;
+}
+
+.system {
+    align-self: center;
+    background: #e2e8f0;
+    color: #4a5568;
+    font-size: 13px;
+    font-weight: 500;
+    margin: 8px auto;
+    padding: 6px 12px;
+    border-radius: 12px;
+    border: 1px solid #cbd5e1;
+}
+
+.input-area {
+    display: flex;
+    gap: 10px;
+}
+
+input {
+    flex: 1;
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+}
+
+input:focus {
+    border-color: #007bff;
+}
+
+button {
+    padding: 12px 24px;
+    cursor: pointer;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background 0.2s;
+}
+
+button:hover {
+    background: #0056b3;
+}
+
+/* Mobile specific styling */
+@media (max-width: 480px) {
+    body {
+        background: white;
+    }
+
+    .chat-container {
+        height: 100vh;
+        max-height: 100vh;
+        border-radius: 0;
+        box-shadow: none;
+        padding: 15px;
+    }
+}
