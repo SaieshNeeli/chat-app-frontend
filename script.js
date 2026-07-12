@@ -77,3 +77,30 @@ input.addEventListener("keypress", function(event){
     }
 
 });
+
+// Adjust height dynamically for mobile keyboards using the Visual Viewport API
+function adjustHeight() {
+    const vh = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+    if (window.innerWidth <= 480) {
+        document.documentElement.style.setProperty('--chat-height', `${vh}px`);
+    } else {
+        document.documentElement.style.setProperty('--chat-height', `${Math.min(vh * 0.9, 650)}px`);
+    }
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+}
+
+if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', adjustHeight);
+    window.visualViewport.addEventListener('scroll', adjustHeight);
+}
+window.addEventListener('resize', adjustHeight);
+window.addEventListener('load', () => {
+    adjustHeight();
+    input.focus();
+});
+
+// Call adjustHeight and focus input on WebSocket open
+socket.addEventListener('open', () => {
+    adjustHeight();
+    input.focus();
+});
