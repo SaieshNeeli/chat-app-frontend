@@ -104,3 +104,11 @@ socket.addEventListener('open', () => {
     adjustHeight();
     input.focus();
 });
+
+// Add listener for the refresh button
+const refreshBtn = document.getElementById("refreshBtn");
+if (refreshBtn) {
+    refreshBtn.addEventListener("click", () => {
+        window.location.reload();
+    });
+}
