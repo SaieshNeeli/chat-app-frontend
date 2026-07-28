@@ -45,6 +45,209 @@ body {
     color: #1a202c;
 }
 
+.sakura-tree-logo {
+    animation: sakura-sway 6s ease-in-out infinite;
+    transform-origin: 50% 100%;
+    overflow: visible;
+    cursor: pointer;
+}
+
+.sakura-tree-logo:hover {
+    animation-play-state: paused;
+    transform: scale(1.12);
+}
+
+@keyframes sakura-sway {
+    0%,100% {
+        transform: rotate(0deg);
+    }
+    25% {
+        transform: rotate(2deg);
+    }
+    50% {
+        transform: rotate(0deg);
+    }
+    75% {
+        transform: rotate(-2deg);
+    }
+}
+
+/* ===========================
+   Falling Sakura Petals
+=========================== */
+
+.falling-leaf{
+    transform-box: fill-box;
+    transform-origin:center;
+    animation:fallingLeaf 6s linear infinite;
+}
+
+.leaf-1{animation-delay:0s;}
+.leaf-2{animation-delay:1s;}
+.leaf-3{animation-delay:2s;}
+.leaf-4{animation-delay:3s;}
+.leaf-5{animation-delay:1.5s;}
+.leaf-6{animation-delay:4.5s;}
+.leaf-7{animation-delay:5.2s;}
+.leaf-8{animation-delay:2.8s;}
+
+@keyframes fallingLeaf{
+
+    0%{
+        opacity:0;
+        transform:translate(0,0) rotate(0deg);
+    }
+
+    10%{
+        opacity:1;
+    }
+
+    30%{
+        transform:translate(-4px,12px) rotate(70deg);
+    }
+
+    50%{
+        transform:translate(7px,26px) rotate(150deg);
+    }
+
+    70%{
+        transform:translate(-5px,42px) rotate(240deg);
+    }
+
+    100%{
+        opacity:0;
+        transform:translate(8px,65px) rotate(360deg);
+    }
+}
+
+/* ===========================
+   Butterfly Wings
+=========================== */
+
+.wing{
+    transform-box:fill-box;
+    transform-origin:center;
+    animation:wingFlap .18s ease-in-out infinite alternate;
+}
+
+@keyframes wingFlap{
+
+    from{
+        transform:scaleX(1);
+    }
+
+    to{
+        transform:scaleX(.45);
+    }
+
+}
+
+/* ===========================
+   Butterfly Flight
+=========================== */
+
+.butterfly{
+    transform-box:fill-box;
+    transform-origin:center;
+}
+
+/* Left butterfly */
+
+.butterfly-1{
+    animation:flyLeft 8s ease-in-out infinite;
+}
+
+@keyframes flyLeft{
+
+    0%{
+        transform:translate(18px,24px);
+    }
+
+    20%{
+        transform:translate(30px,10px);
+    }
+
+    40%{
+        transform:translate(48px,18px);
+    }
+
+    60%{
+        transform:translate(28px,34px);
+    }
+
+    80%{
+        transform:translate(12px,22px);
+    }
+
+    100%{
+        transform:translate(18px,24px);
+    }
+
+}
+
+
+/* Right butterfly */
+
+.butterfly-2{
+    animation:flyRight 9s ease-in-out infinite;
+}
+
+@keyframes flyRight{
+
+    0%{
+        transform:translate(76px,20px);
+    }
+
+    20%{
+        transform:translate(60px,8px);
+    }
+
+    40%{
+        transform:translate(45px,18px);
+    }
+
+    60%{
+        transform:translate(64px,36px);
+    }
+
+    80%{
+        transform:translate(82px,24px);
+    }
+
+    100%{
+        transform:translate(76px,20px);
+    }
+
+}
+
+.butterfly path{
+    filter: drop-shadow(0 0 2px rgba(59,130,246,.8));
+}
+
+/* 
+.sakura-tree-logo {
+    animation: sakura-sway 6s ease-in-out infinite;
+    transform-origin: bottom center;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+.sakura-tree-logo:hover {
+    transform: scale(1.15) rotate(-2deg);
+}
+
+@keyframes sakura-sway {
+    0%, 100% {
+        transform: rotate(0deg) skewX(0deg);
+    }
+    33% {
+        transform: rotate(2.5deg) skewX(1deg);
+    }
+    66% {
+        transform: rotate(-2deg) skewX(-1deg);
+    }
+} */
+
 .status-dot {
     width: 10px;
     height: 10px;
