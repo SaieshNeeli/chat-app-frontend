@@ -8,8 +8,8 @@ const typingIndicator = document.getElementById("typing-indicator");
 // Generate a unique ID for this browser tab
 const myId = crypto.randomUUID();
 
-const socket = new WebSocket("ws://127.0.0.1:8000/ws");
-// const socket = new WebSocket("wss://chat-app-o1bd.onrender.com/ws");
+// const socket = new WebSocket("ws://127.0.0.1:8000/ws");
+const socket = new WebSocket("wss://chat-app-o1bd.onrender.com/ws");
 
 let isTyping = false;
 let typingTimeout = null;
