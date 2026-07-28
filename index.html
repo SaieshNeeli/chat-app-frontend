@@ -12,7 +12,10 @@
     <div class="chat-container">
 
         <div class="chat-header">
-            <h2>Simple Chat</h2>
+            <div class="header-title-container">
+                <h2>Simple Chat</h2>
+                <span id="active-dot" class="status-dot offline" title="Other user is offline"></span>
+            </div>
             <div class="header-actions">
                 <button id="resetBtn" class="action-btn" title="Reset Room">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -33,6 +36,15 @@
         <div id="status">Connecting...</div>
 
         <div id="messages"></div>
+
+        <div id="typing-indicator" class="typing-indicator hidden">
+            <span class="typing-text">typing</span>
+            <div class="typing-dots">
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+            </div>
+        </div>
 
         <div class="input-area">
             <input

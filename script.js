@@ -2,6 +2,8 @@ const statusDiv = document.getElementById("status");
 const messagesDiv = document.getElementById("messages");
 const input = document.getElementById("messageInput");
 const sendBtn = document.getElementById("sendBtn");
+const activeDot = document.getElementById("active-dot");
+const typingIndicator = document.getElementById("typing-indicator");
 
 // Generate a unique ID for this browser tab
 const myId = crypto.randomUUID();
@@ -9,12 +11,63 @@ const myId = crypto.randomUUID();
 // const socket = new WebSocket("ws://127.0.0.1:8000/ws");
 const socket = new WebSocket("wss://chat-app-o1bd.onrender.com/ws");
 
+let isTyping = false;
+let typingTimeout = null;
+
+function setTyping(typing) {
+    if (isTyping !== typing) {
+        isTyping = typing;
+        if (socket.readyState === WebSocket.OPEN) {
+            socket.send(JSON.stringify({
+                type: "typing",
+                sender: myId,
+                typing: typing
+            }));
+        }
+    }
+}
+
+function handleTypingInput() {
+    if (input.value.trim() === "") {
+        setTyping(false);
+        if (typingTimeout) {
+            clearTimeout(typingTimeout);
+            typingTimeout = null;
+        }
+        return;
+    }
+
+    setTyping(true);
+
+    if (typingTimeout) {
+        clearTimeout(typingTimeout);
+    }
+
+    typingTimeout = setTimeout(() => {
+        setTyping(false);
+        typingTimeout = null;
+    }, 1500);
+}
+
 socket.onopen = () => {
     statusDiv.innerText = "Connected";
+    // Register ourselves with our initial visibility state (must be visible and focused)
+    socket.send(JSON.stringify({
+        type: "register",
+        sender: myId,
+        visible: document.visibilityState === "visible" && document.hasFocus()
+    }));
 };
 
 socket.onclose = () => {
     statusDiv.innerText = "Disconnected";
+    if (activeDot) {
+        activeDot.className = "status-dot offline";
+        activeDot.title = "Connection lost";
+    }
+    if (typingIndicator) {
+        typingIndicator.classList.add("hidden");
+    }
 };
 
 socket.onmessage = (event) => {
@@ -23,6 +76,30 @@ socket.onmessage = (event) => {
         data = JSON.parse(event.data);
     } catch (e) {
         console.error("Error parsing WebSocket message:", e);
+        return;
+    }
+
+    if (data.type === "users_status") {
+        const otherUser = data.users.find(u => u.id !== myId);
+        if (otherUser) {
+            if (otherUser.visible) {
+                activeDot.className = "status-dot online";
+                activeDot.title = "Other user is active";
+            } else {
+                activeDot.className = "status-dot offline";
+                activeDot.title = "Other user is idle/away";
+            }
+
+            if (otherUser.typing) {
+                typingIndicator.classList.remove("hidden");
+            } else {
+                typingIndicator.classList.add("hidden");
+            }
+        } else {
+            activeDot.className = "status-dot offline";
+            activeDot.title = "Other user is offline";
+            typingIndicator.classList.add("hidden");
+        }
         return;
     }
 
@@ -54,7 +131,6 @@ socket.onmessage = (event) => {
 };
 
 function sendMessage() {
-
     const message = input.value.trim();
 
     if (message === "")
@@ -67,16 +143,49 @@ function sendMessage() {
     }));
 
     input.value = "";
+    
+    // Reset typing status on send
+    setTyping(false);
+    if (typingTimeout) {
+        clearTimeout(typingTimeout);
+        typingTimeout = null;
+    }
 }
 
 sendBtn.addEventListener("click", sendMessage);
 
-input.addEventListener("keypress", function(event){
+input.addEventListener("input", handleTypingInput);
 
+input.addEventListener("keypress", function(event){
     if(event.key === "Enter"){
         sendMessage();
     }
+});
 
+// Function to determine and send if user is actively using/viewing the chat
+function updateActiveStatus() {
+    const visible = document.visibilityState === "visible" && document.hasFocus();
+    if (socket.readyState === WebSocket.OPEN) {
+        socket.send(JSON.stringify({
+            type: "visibility",
+            sender: myId,
+            visible: visible
+        }));
+    }
+}
+
+// Watch for tab visibility change, window focus, and window blur
+document.addEventListener("visibilitychange", updateActiveStatus);
+window.addEventListener("focus", updateActiveStatus);
+window.addEventListener("blur", () => {
+    // Immediately set to inactive when blurred (user switches apps/clicks away)
+    if (socket.readyState === WebSocket.OPEN) {
+        socket.send(JSON.stringify({
+            type: "visibility",
+            sender: myId,
+            visible: false
+        }));
+    }
 });
 
 // Adjust height dynamically for mobile keyboards using the Visual Viewport API
